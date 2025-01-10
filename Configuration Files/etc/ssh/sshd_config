@@ -1,0 +1,15 @@
+# Configuration standard pour SSH
+Port 22
+PermitRootLogin prohibit-password
+PubkeyAuthentication yes
+PasswordAuthentication no
+
+# Configuration dédiée au SFTP
+Match User sftpuser
+    ChrootDirectory /home/sftpuser
+    ForceCommand internal-sftp
+    PermitTunnel no
+    AllowAgentForwarding no
+    AllowTcpForwarding no
+    X11Forwarding no
+    Port 2022
