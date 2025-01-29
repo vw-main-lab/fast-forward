@@ -1,0 +1,15 @@
+filter {
+  grok {
+    match => { "message" => "\[%{MONTHNUM:month}/%{MONTHDAY:day}/%{YEAR:year} %{TIME:time}:%{INT:milliseconds} %{WORD:timezone}\]" }
+  }
+  mutate {
+    add_field => { "timestamp" => "%{month}/%{day}/20%{year} %{time}.%{milliseconds}" }
+  }
+  date {
+    match => ["timestamp", "MM/dd/yyyy HH:mm:ss.SSS"]
+    timezone => "CET"
+  }
+}
+
+
+\[%{MONTHNUM:month}/%{MONTHDAY:day}/%{YEAR:year} %{TIME:time}:%{INT:milliseconds} %{WORD:timezone}\]
