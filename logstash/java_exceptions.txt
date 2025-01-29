@@ -1,0 +1,21 @@
+input {
+  stdin { }
+}
+
+filter {
+  # Regroupe les lignes des exceptions Java
+  multiline {
+    pattern => "^\s+at "  # Détecte les lignes qui commencent par "at "
+    what => "previous"
+  }
+
+  grok {
+    match => {
+      "message" => "%{JAVAFILE:exception_class}: %{GREEDYDATA:exception_message}(\n\s+at %{JAVASTACKTRACE})*"
+    }
+  }
+}
+
+output {
+  stdout { codec => rubydebug }
+}
