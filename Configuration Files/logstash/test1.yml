@@ -1,0 +1,19 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  # Ajoute un champ timestamp formaté (optionnel)
+  mutate {
+    add_field => { "log_received_at" => "%{@timestamp}" }
+  }
+}
+
+output {
+  file {
+    path => "C:/0/tmp/logs/logstash_output.json"
+    codec => json_lines
+  }
+}

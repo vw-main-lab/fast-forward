@@ -1,0 +1,30 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  # Extraction des champs avec Grok
+  grok {
+    match => { "message" => "^%{TIMESTAMP_ISO8601:app_timestamp}\|%{WORD:type}\|%{DATA:field01}\|%{DATA:field02}\|%{DATA:field03}\|%{DATA:field04}\|%{DATA:field05}\|%{DATA:field06}\|%{GREEDYDATA:message_detail}$" }
+  }
+
+  # Conversion du champ 'app_timestamp' en format Logstash @timestamp
+  date {
+    match => [ "app_timestamp", "ISO8601" ]
+    target => "app_timestamp"
+  }
+
+  # Si tu log ne contient pas certaines clés, on peut les ajouter à l'aide du mutate
+  mutate {
+    remove_field => ["host"]  # Retirer le champ 'host' s'il n'est pas utile
+  }
+}
+
+output {
+  file {
+    path => "C:/0/tmp/logs/logstash_output.json"
+    codec => json_lines  # Format 'json_lines' pour éviter les erreurs JSON
+  }
+}
