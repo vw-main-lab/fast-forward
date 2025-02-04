@@ -1,0 +1,10 @@
+ssh -v -p 2022 toto@serveur
+---
+tail -f /var/log/auth.log
+---
+Match User toto Port 2022
+    PubkeyAuthentication no
+---
+TrustedUserCAKeys /etc/ssh/ca.pub
+---
+PubkeyAcceptedAlgorithms +ssh-rsa
