@@ -1,0 +1,35 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  grok {
+    match => { 
+      "message" => "^%{TIMESTAMP_ISO8601:app_timestamp}\|%{WORD:type}\|%{DATA:field01}?\|%{DATA:field02}?\|%{DATA:field03}?\|%{DATA:field04}?\|%{DATA:field05}?\|%{DATA:field06}?\|%{GREEDYDATA:message_detail}$"
+    }
+  }
+
+  date {
+    match => [ "app_timestamp", "ISO8601" ]
+    target => "app_timestamp"
+  }
+
+  mutate {
+    remove_field => ["host"]
+  }
+}
+
+output {
+  file {
+    path => "C:/0/tmp/logs/logstash_output.json"
+    codec => json_lines
+  }
+}
+
+output {
+  file {
+    path => "${USERPROFILE}/elk/output/logstash.json"
+  }
+}

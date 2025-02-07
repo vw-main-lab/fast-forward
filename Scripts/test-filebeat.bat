@@ -1,3 +1,4 @@
 @echo off
 echo LANCEMENT DE FILEBEAT
-cmd /k filebeat -c test1.conf -e -d "*"
+cd ..\..\filebeat
+cmd /k filebeat -c "..\Configuration Files\filebeat\test.conf" -e -d "*"
