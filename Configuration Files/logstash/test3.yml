@@ -1,0 +1,44 @@
+input {
+  beats {
+    port => 5044
+    codec => multiline {
+      pattern => "^(?:[a-zA-Z0-9_.$]+Exception|[ \t]+at )"
+      negate => "true"
+      what => "previous"
+    }
+  }
+}
+
+filter {
+  # Extraction des champs avec Grok (en capturant les valeurs vides correctement)
+  grok {
+    match => { 
+      "message" => "^%{TIMESTAMP_ISO8601:app_timestamp}\|%{WORD:type}\|%{DATA:field01}?\|%{DATA:field02}?\|%{DATA:field03}?\|%{DATA:field04}?\|%{DATA:field05}?\|%{DATA:field06}?\|%{GREEDYDATA:message_detail}$"
+    }
+  }
+
+  # Détection des stack traces Java
+  if [message] =~ "(?m)^[a-zA-Z0-9_.$]+Exception" {
+    mutate {
+      add_field => { "stack_trace" => "%{message}" }
+    }
+  }
+
+  # Conversion du champ 'app_timestamp' pour éviter d'écraser @timestamp
+  date {
+    match => [ "app_timestamp", "ISO8601" ]
+    target => "app_timestamp"
+  }
+
+  # Nettoyage : suppression des champs inutiles
+  mutate {
+    remove_field => ["host"]
+  }
+}
+
+output {
+  file {
+    path => "C:/0/tmp/logs/logstash_output.json"
+    codec => json_lines  # Format JSON lignes pour éviter les erreurs de syntaxe
+  }
+}

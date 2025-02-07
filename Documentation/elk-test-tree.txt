@@ -1,0 +1,6 @@
+C:\Users\<username>\elk
+│── fast-forward
+│── filebeat
+│── logs
+│── logstash
+└── output
