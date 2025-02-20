@@ -1,0 +1,27 @@
+Subject: Follow-up on SAB Applications Monitoring
+
+Hi Joe,
+
+I hope you're doing well!
+
+I'm reaching out following our discussion on Teams on February 19 regarding the monitoring of SAB applications.
+
+As a reminder, here are our prerequisites:
+
+A single access point for employees
+The ability to parse logs to filter by type (ERROR, WARNING, etc.) and based on values and keywords
+Support for multiline logs, such as Java stack traces
+The possibility to add alerting later on
+According to you, the most suitable solution would be something like "nani + nana."
+
+Julien, who is copied on this email, will be supporting me during the Hackathon. With this in mind, we would like to prepare the necessary prerequisites outlined on this page:
+
+http://mypage
+
+Among them, I see some that relate to Azure DevOps. Could you confirm whether they are indeed required? Thanks in advance!
+
+Prereq 1
+Prereq 2
+etc.
+Best regards,
+[Your Name]
